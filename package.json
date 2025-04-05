@@ -26,7 +26,6 @@
     ]
   },
   "scripts": {
-    "pretest": "cp test/support/vscode.js node_modules/vscode/index.js && cp test/support/child_process.js node_modules/child_process/index.js",
     "test": "mocha"
   },
   "devDependencies": {

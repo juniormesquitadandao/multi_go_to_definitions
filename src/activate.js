@@ -3,14 +3,15 @@ function activate(context, _vscode, _child_process) {
   const { exec, execSync } = _child_process || require('child_process');
 
   let disposable = vscode.commands.registerCommand('extension.multiGoToDefinitions', () => {
+
     try {
       execSync('rg --version', { stdio: 'ignore' });
     } catch (err) {
       const instruction = {
         linux: 'sudo apt install ripgrep',
-        mac: 'brew install ripgrep',
-        windows: 'choco install ripgrep'
-      }[process.platform];
+        darwin: 'brew install ripgrep',
+        win32: 'choco install ripgrep'
+      }[process.platform] || '';
 
       vscode.window.showErrorMessage(`Please install Ripgrep: ${instruction}`);
 
@@ -26,6 +27,7 @@ function activate(context, _vscode, _child_process) {
     let selectedText = editor.document.getText(selection);
 
     if (!selectedText) {
+
       const wordRange = editor.document.getWordRangeAtPosition(selection.start);
       selectedText = editor.document.getText(wordRange);
     }
