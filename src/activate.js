@@ -40,7 +40,7 @@ function activate(context, _vscode, _child_process) {
     const currentLineNumber = selection.start.line + 1;
 
     const command = `rg --sort=path -n --max-count=100 "${selectedText}" ${vscode.workspace.rootPath} || true`;
-    exec(command, { cwd: vscode.workspace.rootPath, encoding: 'utf8', maxBuffer: 100 * 1024 * 1024 }, (err, stdout) => {
+    exec(command, { cwd: vscode.workspace.rootPath, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }, (err, stdout) => {
       try {
         if (err) {
           vscode.window.showErrorMessage(`Error: ${err}`);
@@ -56,7 +56,7 @@ function activate(context, _vscode, _child_process) {
           const [absolutePath, line, ...code] = definition.split(':');
 
           return {
-            label: absolutePath.replace(`${vscode.workspace.rootPath}/`, ''),
+            label: absolutePath === currentFilePath ? '' : absolutePath.replace(`${vscode.workspace.rootPath}/`, ''),
             description: `:${line} ${code[0].trim()}`,
             absolutePath: absolutePath,
             line: parseInt(line),
@@ -65,7 +65,16 @@ function activate(context, _vscode, _child_process) {
               new vscode.Position(parseInt(line) - 1, 0)
             )
           }
-        }).filter(item => item.absolutePath !== currentFilePath || item.line !== currentLineNumber);
+        }).filter(item => item.absolutePath !== currentFilePath || item.line !== currentLineNumber)
+          .sort((a, b) => {
+            if (a.absolutePath === currentFilePath && b.absolutePath !== currentFilePath) {
+              return -1;
+            }
+            if (a.absolutePath !== currentFilePath && b.absolutePath === currentFilePath) {
+              return 1;
+            }
+            return 0;
+          });
 
         vscode.window.showQuickPick(items, {
           placeHolder: `Definitions of ${selectedText}`
