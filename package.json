@@ -4,7 +4,7 @@
   "description": "Navigate and find definitions across multiple languages with ease.",
   "version": "1.0.0",
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.1.37"
   },
   "categories": [
     "Programming Languages"
@@ -29,7 +29,9 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "vscode": "^1.0.0",
-    "mocha": "^10.0.0"
-  }
-} 
+    "chai": "^4.3.0",
+    "mocha": "^10.0.0",
+    "sinon": "^15.0.0",
+    "vscode": "^1.1.37"
+   }
+}

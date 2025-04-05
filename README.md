@@ -34,7 +34,18 @@ Navigate and find definitions across multiple languages with ease.
   - **Windows**: `choco install ripgrep`
 
 ## Development
-- Run tests with `./devops/node/test.sh`.
+
+```sh
+cd multi_go_to_definitions
+  ARG_USER_UID=$(id -u) ARG_USER_GID=$(id -g) docker compose config
+  ARG_USER_UID=$(id -u) ARG_USER_GID=$(id -g) docker compose build
+  docker compose up -d
+  docker compose exec app bash
+    npm install
+    npm test
+    exit
+  docker compose down
+```
 
 ## License
 MIT License 
