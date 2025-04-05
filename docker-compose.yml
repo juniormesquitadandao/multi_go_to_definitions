@@ -6,7 +6,7 @@ services:
         ARG_LINUX_LOCALE: en_US.UTF-8
         ARG_USER_UID: ${ARG_USER_UID}
         ARG_USER_GID: ${ARG_USER_GID}
-        ARG_NODE_VERSION: 18.2.0
+        ARG_NODE_VERSION: 20.19.0
       context: .
     working_dir: /home/user/multi_go_to_definitions
     tty: true

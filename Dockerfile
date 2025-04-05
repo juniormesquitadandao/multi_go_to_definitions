@@ -1,5 +1,5 @@
 ARG ARG_NODE_VERSION
-FROM --platform=linux/amd64 node:${ARG_NODE_VERSION}-buster-slim
+FROM --platform=linux/amd64 node:${ARG_NODE_VERSION}-bullseye-slim
 
 SHELL ["/bin/sh", "-c"]
 
