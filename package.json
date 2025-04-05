@@ -10,6 +10,13 @@
     "Programming Languages"
   ],
   "main": "./src/app.js",
+  "activationEvents": [
+    "onCommand:extension.multiGoToDefinitions"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juniormesquitadandao/multi_go_to_definitions"
+  },
   "contributes": {
     "commands": [
       {
@@ -26,12 +33,15 @@
     ]
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "mkdir -p dist && vsce package -o dist/multi-go-to-definitions.vsix"
   },
   "devDependencies": {
     "chai": "^4.3.0",
+    "child_process": "^1.0.2",
     "mocha": "^10.0.0",
     "sinon": "^15.0.0",
+    "vsce": "^2.15.0",
     "vscode": "^1.0.0"
-   }
+  }
 }
