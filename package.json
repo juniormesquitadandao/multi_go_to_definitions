@@ -1,0 +1,35 @@
+{
+  "name": "multi-go-to-definitions",
+  "displayName": "Multi Go To Definitions",
+  "description": "Navigate and find definitions across multiple languages with ease.",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./src/app.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.multiGoToDefinitions",
+        "title": "Multi Go To Definitions"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.multiGoToDefinitions",
+        "key": "ctrl+f",
+        "when": "editorFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "vscode": "^1.0.0",
+    "mocha": "^10.0.0"
+  }
+} 
