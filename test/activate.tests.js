@@ -1,16 +1,14 @@
-const activate = require('../src/activate');
-const vscode = require('vscode');
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { execSync } = require('child_process');
+const vscode = require('vscode');
+const { exec, execSync } = require('child_process');
+const activate = require('../src/activate');
 
-sinon.stub(vscode.commands, 'registerCommand');
-sinon.stub(vscode.window, 'showErrorMessage');
-sinon.stub(execSync);
+const sandbox = sinon.createSandbox();
 
 describe('Activate Function', () => {
   afterEach(() => {
-    sinon.restore();
+    sandbox.restore();
   });
 
   it('should register the command', () => {

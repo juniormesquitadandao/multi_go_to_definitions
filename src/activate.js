@@ -1,91 +1,88 @@
-const vscode = require('vscode');
-const { exec, execSync } = require('child_process');
+function activate(context, _vscode, _child_process) {
+  const vscode = _vscode || require('vscode');
+  const { exec, execSync } = _child_process || require('child_process');
 
-/**
- * @param {vscode.ExtensionContext} context
- */
-function activate(context) {
-    let disposable = vscode.commands.registerCommand('extension.multiGoToDefinitions', () => {
-        try {
-            execSync('rg --version', { stdio: 'ignore' });
-        } catch (err) {
-            const instruction = {
-                linux: 'sudo apt install ripgrep',
-                mac: 'brew install ripgrep',
-                windows: 'choco install ripgrep'
-            }[process.platform];
+  let disposable = vscode.commands.registerCommand('extension.multiGoToDefinitions', () => {
+    try {
+      execSync('rg --version', { stdio: 'ignore' });
+    } catch (err) {
+      const instruction = {
+        linux: 'sudo apt install ripgrep',
+        mac: 'brew install ripgrep',
+        windows: 'choco install ripgrep'
+      }[process.platform];
 
-            vscode.window.showErrorMessage(`Please install Ripgrep: ${instruction}`);
+      vscode.window.showErrorMessage(`Please install Ripgrep: ${instruction}`);
 
-            return;
+      return;
+    }
+
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    let selectedText = editor.document.getText(selection);
+
+    if (!selectedText) {
+      const wordRange = editor.document.getWordRangeAtPosition(selection.start);
+      selectedText = editor.document.getText(wordRange);
+    }
+
+    if (!selectedText) {
+      return;
+    }
+
+    const currentFilePath = editor.document.uri.fsPath;
+    const currentLineNumber = selection.start.line + 1;
+
+    const command = `rg --sort=path -n --max-count=100 "${selectedText}" ${vscode.workspace.rootPath} || true`;
+    exec(command, { cwd: vscode.workspace.rootPath, encoding: 'utf8', maxBuffer: 100 * 1024 * 1024 }, (err, stdout) => {
+      try {
+        if (err) {
+          vscode.window.showErrorMessage(`Error: ${err}`);
+          return;
         }
-    
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
+
+        const definitions = stdout.split('\n').filter(definition => definition);
+        if (definitions.length === 0) {
+          return;
         }
 
-        const selection = editor.selection;
-        let selectedText = editor.document.getText(selection);
+        const items = definitions.map(definition => {
+          const [absolutePath, line, ...code] = definition.split(':');
 
-        if (!selectedText) {
-            const wordRange = editor.document.getWordRangeAtPosition(selection.start);
-            selectedText = editor.document.getText(wordRange);
-        }
+          return {
+            label: absolutePath.replace(`${vscode.workspace.rootPath}/`, ''),
+            description: `:${line} ${code[0].trim()}`,
+            absolutePath: absolutePath,
+            line: parseInt(line),
+            selection: new vscode.Range(
+              new vscode.Position(parseInt(line) - 1, 0),
+              new vscode.Position(parseInt(line) - 1, 0)
+            )
+          }
+        }).filter(item => item.absolutePath !== currentFilePath || item.line !== currentLineNumber);
 
-        if (!selectedText) {
-            return;
-        }
-
-        const currentFilePath = editor.document.uri.fsPath;
-        const currentLineNumber = selection.start.line + 1;
-    
-        const command = `rg --sort=path -n --max-count=100 "${selectedText}" ${vscode.workspace.rootPath} || true`;
-        exec(command, { cwd: vscode.workspace.rootPath, encoding: 'utf8', maxBuffer: 100 * 1024 * 1024 }, (err, stdout) => {
-            try {
-                if (err) {
-                    vscode.window.showErrorMessage(`Error: ${err}`);
-                    return;
-                }
-
-                const definitions = stdout.split('\n').filter(definition => definition);
-                if (definitions.length === 0) {
-                    return;
-                }
-
-                const items = definitions.map(definition => {
-                    const [absolutePath, line, ...code] = definition.split(':');
-
-                    return {
-                        label: absolutePath.replace(`${vscode.workspace.rootPath}/`, ''),
-                        description: `:${line} ${code[0].trim()}`,
-                        absolutePath: absolutePath,
-                        line: parseInt(line),
-                        selection: new vscode.Range(
-                            new vscode.Position(parseInt(line) - 1, 0),
-                            new vscode.Position(parseInt(line) - 1, 0)
-                        )
-                    }
-                }).filter(item => item.absolutePath !== currentFilePath || item.line !== currentLineNumber);
-
-                vscode.window.showQuickPick(items, {
-                    placeHolder: `Definitions of ${selectedText}`
-                }).then(item => {
-                    if (item) {
-                        vscode.workspace.openTextDocument(item.absolutePath).then(document => {
-                            vscode.window.showTextDocument(document, {
-                                selection: item.selection
-                            });
-                        });
-                    }
-                });
-            } catch (error) {
-                vscode.window.showErrorMessage(`Error: ${error}`);
-            }
+        vscode.window.showQuickPick(items, {
+          placeHolder: `Definitions of ${selectedText}`
+        }).then(item => {
+          if (item) {
+            vscode.workspace.openTextDocument(item.absolutePath).then(document => {
+              vscode.window.showTextDocument(document, {
+                selection: item.selection
+              });
+            });
+          }
         });
+      } catch (error) {
+        vscode.window.showErrorMessage(`Error: ${error}`);
+      }
     });
+  });
 
-    context.subscriptions.push(disposable);
+  context.subscriptions.push(disposable);
 }
 
 module.exports = activate; 

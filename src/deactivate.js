@@ -1,3 +1,5 @@
-function deactivate() {}
+function deactivate() {
+  // Function implementation
+}
 
-module.exports = deactivate; 
+module.exports = deactivate;
