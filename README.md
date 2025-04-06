@@ -33,6 +33,36 @@ Navigate and find definitions across multiple languages with ease.
   - **macOS**: `brew install ripgrep`
   - **Windows**: `choco install ripgrep`
 
+## Preferences: Open Keyboard Shortcuts (JSON)
+```js
+[
+  {
+    "key": "ctrl+i",
+    "command": "composerMode.agent"
+  },
+  {
+    "key": "ctrl+y",
+    "command": "redo"
+  },
+  {
+    "key": "ctrl+z",
+    "command": "-redo"
+  },
+  {
+    "key": "ctrl+=",
+    "command": "editor.action.fontZoomIn"
+  },
+  {
+    "key": "ctrl+-",
+    "command": "editor.action.fontZoomOut"
+  },
+  {
+    "key": "ctrl+0",
+    "command": "editor.action.fontZoomReset"
+  }
+]
+```
+
 ## Development
 
 ```sh

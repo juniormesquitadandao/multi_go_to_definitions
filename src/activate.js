@@ -20,6 +20,7 @@ function activate(context, _vscode, _child_process) {
 
     const editor = vscode.window.activeTextEditor;
     if (!editor) {
+      vscode.commands.executeCommand('actions.find');
       return;
     }
 
@@ -27,12 +28,12 @@ function activate(context, _vscode, _child_process) {
     let selectedText = editor.document.getText(selection);
 
     if (!selectedText) {
-
       const wordRange = editor.document.getWordRangeAtPosition(selection.start);
       selectedText = editor.document.getText(wordRange);
     }
 
     if (!selectedText) {
+      vscode.commands.executeCommand('actions.find');
       return;
     }
 
@@ -49,6 +50,7 @@ function activate(context, _vscode, _child_process) {
 
         const definitions = stdout.split('\n').filter(definition => definition);
         if (definitions.length === 0) {
+          vscode.commands.executeCommand('actions.find');
           return;
         }
 
