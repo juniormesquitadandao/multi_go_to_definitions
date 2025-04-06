@@ -14,6 +14,7 @@ function activate(context, _vscode, _child_process) {
       }[process.platform] || '';
 
       vscode.window.showErrorMessage(`Please install Ripgrep: ${instruction}`);
+      vscode.commands.executeCommand('actions.find');
 
       return;
     }
@@ -45,6 +46,7 @@ function activate(context, _vscode, _child_process) {
       try {
         if (err) {
           vscode.window.showErrorMessage(`Error: ${err}`);
+          vscode.commands.executeCommand('actions.find');
           return;
         }
 
@@ -91,6 +93,7 @@ function activate(context, _vscode, _child_process) {
         });
       } catch (error) {
         vscode.window.showErrorMessage(`Error: ${error}`);
+        vscode.commands.executeCommand('actions.find');
       }
     });
   });
