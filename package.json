@@ -10,9 +10,6 @@
     "Programming Languages"
   ],
   "main": "./src/app.js",
-  "activationEvents": [
-    "onCommand:extension.multiGoToDefinitions"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/juniormesquitadandao/multi_go_to_definitions"
@@ -22,15 +19,51 @@
       {
         "command": "extension.multiGoToDefinitions",
         "title": "Multi Go To Definitions"
+      },
+      {
+        "command": "workbench.files.action.showActiveFileInExplorer",
+        "title": "Reveal in Side Bar"
+      },
+      {
+        "command": "revealFileInOS",
+        "title": "Open Containing Folder"
+      },
+      {
+      "command": "copyFilePath",
+        "title": "Copy Path"
+      },
+      {
+        "command": "copyRelativeFilePath",
+        "title": "Copy Relative Path"
       }
     ],
     "keybindings": [
       {
         "command": "extension.multiGoToDefinitions",
         "key": "ctrl+f",
-        "when": "editorFocus"
+        "when": "editorTextFocus"
       }
-    ]
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "workbench.files.action.showActiveFileInExplorer",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "revealFileInOS",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "copyFilePath",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "copyRelativeFilePath",
+          "when": "editorTextFocus"
+        }
+      ]
+    }
   },
   "scripts": {
     "test": "mocha",
