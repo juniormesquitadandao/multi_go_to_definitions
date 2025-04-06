@@ -43,6 +43,7 @@ cd multi_go_to_definitions
   docker compose exec app bash
     npm install
     npm test
+    npm run build
     exit
   docker compose down
 ```
