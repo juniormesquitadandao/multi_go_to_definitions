@@ -41,7 +41,7 @@ function activate(context, _vscode, _child_process) {
     const currentFilePath = editor.document.uri.fsPath;
     const currentLineNumber = selection.start.line + 1;
 
-    const command = `rg --sort=path -n --max-count=100 "${selectedText}" ${vscode.workspace.rootPath} || true`;
+    const command = `rg --sort=path -n --max-count=100 "(\\w{3}+\\s+)${selectedText}" ${vscode.workspace.rootPath} | rg -v "return|\\s+\\w+\\.|\\w+\\.\\w+\\s+" || true`;
     exec(command, { cwd: vscode.workspace.rootPath, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }, (err, stdout) => {
       try {
         if (err) {
@@ -101,4 +101,4 @@ function activate(context, _vscode, _child_process) {
   context.subscriptions.push(disposable);
 }
 
-module.exports = activate; 
+module.exports = activate;
