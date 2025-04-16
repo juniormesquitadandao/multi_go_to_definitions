@@ -29,11 +29,6 @@ function activate(context, _vscode, _child_process) {
     let selectedText = editor.document.getText(selection);
 
     if (!selectedText) {
-      const wordRange = editor.document.getWordRangeAtPosition(selection.start);
-      selectedText = editor.document.getText(wordRange);
-    }
-
-    if (!selectedText) {
       vscode.commands.executeCommand('actions.find');
       return;
     }
@@ -45,7 +40,6 @@ function activate(context, _vscode, _child_process) {
     exec(command, { cwd: vscode.workspace.rootPath, encoding: 'utf8', maxBuffer: 512 * 1024 * 1024 }, (err, stdout) => {
       try {
         if (err) {
-          vscode.window.showErrorMessage(`Error: ${err}`);
           vscode.commands.executeCommand('actions.find');
           return;
         }
@@ -92,7 +86,6 @@ function activate(context, _vscode, _child_process) {
           }
         });
       } catch (error) {
-        vscode.window.showErrorMessage(`Error: ${error}`);
         vscode.commands.executeCommand('actions.find');
       }
     });

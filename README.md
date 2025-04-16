@@ -33,6 +33,43 @@ Navigate and find definitions across multiple languages with ease.
   - **macOS**: `brew install ripgrep`
   - **Windows**: `choco install ripgrep`
 
+## Preferences: Open User Settings (JSON)
+```js
+{
+  "window.commandCenter": 1,
+  "workbench.preferredDarkColorTheme": "Default Dark Modern",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.preferredLightColorTheme": "Default Dark Modern",
+  "editor.stickyScroll.enabled": false,
+  "editor.stickyScroll.scrollWithEditor": false,
+  "workbench.tree.enableStickyScroll": false,
+  "editor.fontSize": 12,
+  "terminal.integrated.mouseWheelZoom": true,
+  "editor.mouseWheelZoom": true,
+  "workbench.preferredHighContrastLightColorTheme": "Default Dark Modern",
+  "workbench.preferredHighContrastColorTheme": "Default Dark Modern",
+  "editor.links": false,
+  "editor.tabSize": 2,
+  "typescript.preferGoToSourceDefinition": true,
+  "javascript.preferGoToSourceDefinition": true,
+  "editor.detectIndentation": false,
+  "terminal.integrated.fontSize": 13,
+  "cursor.composer.shouldAutoScrollToBottom": false,
+  "cursor.cmdk.autoSelect": false,
+  "cursor.cmdk.useThemedDiffBackground": false,
+  "cursor.chat.terminalShowHoverHint": false,
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "workbench.editor.enablePreview": false,
+  "diffEditor.useInlineViewWhenSpaceIsLimited": false,
+  "explorer.autoReveal": false,
+  "workbench.editor.tabSizing": "shrink",
+  "workbench.editor.wrapTabs": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false
+}
+```
+
 ## Preferences: Open Keyboard Shortcuts (JSON)
 ```js
 [
@@ -59,6 +96,10 @@ Navigate and find definitions across multiple languages with ease.
   {
     "key": "ctrl+0",
     "command": "editor.action.fontZoomReset"
+  },
+  {
+    "key": "ctrl+shift+j",
+    "command": "editor.action.joinLines"
   }
 ]
 ```
@@ -79,4 +120,4 @@ cd multi_go_to_definitions
 ```
 
 ## License
-MIT License 
+MIT License
